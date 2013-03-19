@@ -1,18 +1,26 @@
-def f(n, m, x)
-	(Math.sin(m * x) / Math.sin(x)) ** (2 * n)
-end
- 
-def HappyTicketsCount(n, m)
-	n1 = n * (m - 1) + 1
-	s = 0
-	a = 20
-	for k in 1..(n1 - 1)
-		x = 1 + (a + k * Math::PI / n1)
-		s = s + f(n, m, x)
+c = [0, 0, 0, 0, 0, 0]
+k = 0
+for i in 100000..999999	
+	c[0] = i / 100000
+	c[1] = (i - c[0] * 100000) / 10000
+	c[2] = (i - c[0] * 100000 - c[1] * 10000) / 1000
+	c[3] = (i - c[0] * 100000 - c[1] * 10000 - c[2] * 1000) / 100
+	c[4] = (i - c[0] * 100000 - c[1] * 10000 - c[2] * 1000 - c[3] * 100) / 10
+	c[5] = (i - c[0] * 100000 - c[1] * 10000 - c[2] * 1000 - c[3] * 100 - c[4] * 10)
+	s1 = 0
+	s2 = 0
+	
+	for j in 0..2
+		s1 += c[j]
 	end
-	return (s / n1).round
+	
+	for j in 3..5
+		s2 += c[j]
+	end
+	
+	if  s1 == s2
+		k += 1
+	end
 end
-
-n = HappyTicketsCount(3, 10)
-p = 100.0 * n / (999999 - 100000)
-printf("%d %.2f%", n, p) 
+p = 100.0 * k / (999999 - 100000)
+printf("%d %.2f%", k, p)
