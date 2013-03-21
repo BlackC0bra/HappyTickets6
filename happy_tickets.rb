@@ -1,26 +1,23 @@
-c = [0, 0, 0, 0, 0, 0]
-k = 0
-for i in 100000..999999	
-	c[0] = i / 100000
-	c[1] = (i - c[0] * 100000) / 10000
-	c[2] = (i - c[0] * 100000 - c[1] * 10000) / 1000
-	c[3] = (i - c[0] * 100000 - c[1] * 10000 - c[2] * 1000) / 100
-	c[4] = (i - c[0] * 100000 - c[1] * 10000 - c[2] * 1000 - c[3] * 100) / 10
-	c[5] = (i - c[0] * 100000 - c[1] * 10000 - c[2] * 1000 - c[3] * 100 - c[4] * 10)
-	s1 = 0
-	s2 = 0
-	
-	for j in 0..2
-		s1 += c[j]
-	end
-	
-	for j in 3..5
-		s2 += c[j]
-	end
-	
-	if  s1 == s2
-		k += 1
-	end
+require 'mathn'
+n = 3 # 2n — кол-во цифр в билете
+#максимально возможная сумма n*9 + 1 
+a = Array.new(n*9 + 1, 0)
+b = Array.new(n*9 + 1, 0)
+ 
+('0'+'0'*(n - 1)..'9'*n).each do |s| 
+  sum = 0
+  s.split('').select{|c| sum += c.to_i}
+  a[sum] += 1
 end
-p = 100.0 * k / (999999 - 100000)
-printf("%d %.2f%", k, p)
+
+('1'+'0'*(n - 1)..'9'*n).each do |s| 
+  sum = 0
+  s.split('').select{|c| sum += c.to_i}
+  b[sum] += 1
+end
+
+count = Vector[*a].inner_product(Vector[*b])
+p = 100.0 * count / (('9'*2*n).to_i - ('1'+'0'*(2*n-1)).to_i)
+ 
+puts "Number of lucky tickets: #{count}"
+printf("%.2f%", p)
